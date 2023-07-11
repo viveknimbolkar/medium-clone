@@ -1,9 +1,9 @@
 import React from 'react'
 
-function Blog() {
+function Membership() {
   return (
     <div>Blog</div>
   )
 }
 
-export default Blog
+export default Membership
