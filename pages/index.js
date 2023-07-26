@@ -1,13 +1,15 @@
-
-import PrivateHeader from '@/components/header/PrivateHeader'
+import React, { useContext } from 'react'
 import PublicHeader from '@/components/header/PublicHeader'
+import AuthContext from '@/components/context'
+import PrivateHeader from '@/components/header/PrivateHeader';
+import BecomePro from '@/components/promember/becomePro';
 
 export default function Home() {
+  const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
 
   return (
     <>
-      <PublicHeader />
-      
+      {isLoggedIn ? <PrivateHeader /> : <PublicHeader />}
       <section className='flex h-[70vh] bg-yellow-400 border-b border-black pl-[100px]'>
         <div className='flex flex-col justify-center gap-5'>
           <h1 className='font-bold text-8xl font-serif'>Stay curious.</h1>

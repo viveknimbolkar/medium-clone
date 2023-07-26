@@ -1,28 +1,15 @@
-import { Schema, model, models } from "mongoose";
+import mongooose from "mongoose";
 import jwt from "jsonwebtoken";
 
-const userSchema = new Schema(
+const userSchema = mongooose.Schema(
   {
-    name: String,
-    email: String,
-    password: String,
-  },
-  {
-    timestamps: true,
+    name: { type: String },
+    email: { type: String },
+    password: { type: String },
   }
 );
 
-// userSchema.methods.encryptPassword = async function () {
-//   const salt = await bcrypt.genSalt(10);
-//   this.password = await bcrypt.hash(this.password, salt);
-// };
+mongooose.models = {}
 
-// userSchema.statics.comparePassword = async function (password, hash) {
-//   return await bcrypt.compare(password, hash);
-// };
-
-userSchema.methods.generateToken = function () {
-  return jwt.sign({ id: this._id }, process.env.JWT_SECRET);
-};
-
-export default model("User", userSchema);
+const User = mongooose.model("User", userSchema);
+export default User;

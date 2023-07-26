@@ -1,15 +1,9 @@
-import { connect, connection } from "mongoose";
+import mongoose from 'mongoose'
 
-const connectionStatus = {isConnected:false}
-export async function dbConnect(){
-    if(connectionStatus.isConnected) return;
+export async function dbConnect() {
     
-    const db = await connect(process.env.DBURI);
-    console.log(db.connection.db);
-    connectionStatus.isConnected = db.connections[0].readyState;
+    if (mongoose.connection.readyState === 1) {
+        return mongoose.connection.asPromise();
+    }
+    return await mongoose.connect(process.env.MONGODB_URI);
 }
-
-
-connection.on("connected", () => console.log("Mongodb connected to database"));
-
-connection.on("error", (err) => console.error("Mongodb Errro:", err.message));

@@ -1,9 +1,12 @@
-import React, { useState } from 'react'
+"use client"
+import React, { useContext, useState } from 'react'
 import Link from 'next/link'
 import Modal from '../modal'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faClose, faEnvelope, faAppleWhole } from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios'
+import { useRouter } from 'next/router'
+import AuthContext from '../context'
 function PublicHeader() {
     const [loginStep, setLoginStep] = useState("all-auth");
     const [open, setOpen] = useState(false);
@@ -14,13 +17,15 @@ function PublicHeader() {
     const [newEmail, setNewEmail] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [verifyPassword, setVerifyPassword] = useState("");
+    const { setIsLoggedIn } = useContext(AuthContext);
 
+    const router = useRouter();
     const handleSubmit = () => {
-        axios.post("/api/auth/signin", { email, password }).then(res => { console.log(res); }).catch(err => console.log(err))
+        axios.post("/api/auth/signin", { email, password }).then(res => { localStorage.setItem('token', res.data.token); setIsLoggedIn(true); router.push("/home"); }).catch(err => console.log(err))
     }
 
-    const handleSignUp = ()=>{
-        axios.post("/api/auth/signup", { newName,newEmail, newPassword, verifyPassword }).then(res => { console.log(res); }).catch(err => console.log(err))
+    const handleSignUp = () => {
+        axios.post("/api/auth/signup", { newName, newEmail, newPassword, verifyPassword }).then(res => { console.log(res); }).catch(err => console.log(err))
 
     }
 
@@ -49,17 +54,17 @@ function PublicHeader() {
                                 <>
                                     <div className='flex flex-col items-center'>
                                         <button className='border-[1px] border-slate-600 hover:border-black duration-50 text-sm px-4 my-2 bg-white rounded-full p-2'> Sign in with Google</button>
-                                    
+
                                         <button className='border-[1px] border-slate-600 hover:border-black duration-50 text-sm px-4 my-2 bg-white rounded-full p-2'><FontAwesomeIcon icon={faAppleWhole} /> Sign in with Apple</button>
                                         <button onClick={() => setLoginStep("signin")} className='border-[1px] border-slate-600 hover:border-black duration-50 text-sm px-4 my-2 bg-white rounded-full p-2'><FontAwesomeIcon icon={faEnvelope} /> Sign in with Email</button>
                                         <input value={newName} onChange={(e) => setNewName(e.target.value)} type='text' className='border-black border-b-[1px] focus:outline-none text-center pb-1 mt-4' placeholder='Your name' />
                                         <br />
                                         <input value={newEmail} onChange={(e) => setNewEmail(e.target.value)} type='email' className='border-black border-b-[1px] focus:outline-none text-center pb-1' placeholder='Email address' />
-                                       <br />
+                                        <br />
                                         <input value={newPassword} onChange={(e) => setNewPassword(e.target.value)} type='password' className='border-black border-b-[1px] focus:outline-none text-center pb-1' placeholder='New Password' />
                                         <br />
                                         <input value={verifyPassword} onChange={(e) => setVerifyPassword(e.target.value)} type='password' className='border-black border-b-[1px] focus:outline-none text-center pb-1' placeholder='Confirm New Password' />
-                                        <button className='bg-slate-950 hover:bg-black text-white w-1/2 p-2 rounded-full my-2' onClick={()=> handleSignUp()}>Sign Up</button>
+                                        <button className='bg-slate-950 hover:bg-black text-white w-1/2 p-2 rounded-full my-2' onClick={() => handleSignUp()}>Sign Up</button>
                                         <div>No account? <strong className='text-green-600 cursor-pointer' onClick={() => setLoginStep("signup")} >Create One</strong></div>
                                     </div>
                                 </> : loginStep === "signin" ? <>
@@ -89,7 +94,6 @@ function PublicHeader() {
                                 </> : <></>
                         }
                     </div>
-
                 </div>
             </Modal>
         </header>

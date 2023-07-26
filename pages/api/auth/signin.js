@@ -1,10 +1,15 @@
+import User from "@/models/User";
+import { dbConnect } from "@/utils/dbConnection";
+import jwt from 'jsonwebtoken'
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
     if (req.method === 'POST') {
         const { email, password } = req.body;
-        console.log(email, password);
-        
-        return res.status(200).json({ output: "working" });
+        await dbConnect();
+        const userFound = await User.findOne({ email: email, password: password });
+        if (!userFound)
+            return res.status(200).json({ output: "Invalid username or password" });
+        return res.status(200).json({ token: jwt.sign({ email: userFound.email }, process.env.JWT_SECRET) });
     }
     return res.status(200).json({ output: "Something went wrong" })
 }
