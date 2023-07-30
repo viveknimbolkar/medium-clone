@@ -42,7 +42,7 @@ function PublicHeader() {
                 <li className='cursor-pointer' onClick={() => setOpen(true)}>Sign In</li>
                 <li><button className='bg-black text-white p-2 px-4 text-xs rounded-full border-none hover:bg-slate-800'>Get Started</button></li>
             </ul>
-            <Modal isOpened={open} onClose={() => setOpen(!open)}>
+            <Modal isLoginWindow={true} isBackgroundBlur={true} isOpened={open} onClose={() => setOpen(!open)}>
                 <div className='bg-white w-1/2 h-screen'>
                     <div className='flex justify-end pr-5 pt-5'>
                         <FontAwesomeIcon icon={faClose} onClick={() => setOpen(!open)} className='fa-xl p-1 cursor-pointer  hover:text-black text-slate-400 duration-50' />
