@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import Modal from '../modal';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import Image from 'next/image';
+import UserImage from '../../public/user.png'
+
 
 function EmailModalBody({ onClose }) {
 
@@ -15,7 +16,7 @@ function EmailModalBody({ onClose }) {
     </div></>
 }
 
-function UsernameModalBody({onClose}) {
+function UsernameModalBody({ onClose }) {
   const [emailUpdate, setEmailUpdate] = useState('');
   return <>
     <input value={emailUpdate} onChange={e => setEmailUpdate(e.target.value)} type='email' className='mt-5 focus:outline-none border-b border-black w-full' />
@@ -36,8 +37,48 @@ function UsernameModalBody({onClose}) {
     </div>
   </>
 }
-function ProfileInfoModalBody() {
-  return <></>
+function ProfileInfoModalBody({ onClose }) {
+  const [name, setName] = useState("");
+  const [bio, setBio] = useState("");
+  const [image, setImage] = useState("");
+  const imageRef = useRef(null)
+
+  const handleImageUpload = (e) => {
+    e.target.files.length > 0 &&
+      setImage(e.target.files[0])
+  }
+
+  return <>
+    <div className='flex mt-10'>
+      <Image src={UserImage} width={80} height={80} />
+      <div className='p-3'>
+        <input ref={imageRef} className='hidden' type='file' onChange={handleImageUpload} />
+        <button onClick={(e) => imageRef.current.click()} className='text-green-500 mr-3'>Update</button>
+        <button className='text-red-500'>Remove</button>
+        <p className='text-gray-500 text-xs'>Recommended: Square JPG, PNG, or GIF, at least 1,000 pixels per side.</p>
+      </div>
+    </div>
+    <div>
+      <h5 className='mt-5'>Name*</h5>
+      <input type='text' value={name} onChange={(e) => setName(e.target.value)} className='w-full border-b-2 focus:outline-none' />
+      <div className='flex justify-between'>
+        <p className='text-xs text-gray-500'>Appears on your Profile page, as your byline, and in your responses.
+          5/50</p>
+        <span>5/50</span>
+      </div>
+      <h5 className='mt-5'>Bio</h5>
+      <input type='text' value={bio} onChange={(e) => setBio(e.target.value)} className='w-full border-b-2 focus:outline-none' />
+      <div className='flex justify-between'>
+        <p className='text-xs text-gray-500'>Appears on your Profile and next to your stories.
+          5/50</p>
+        <span>5/160</span>
+      </div>
+    </div>
+    <div className='mt-5 text-end'>
+      <button onClick={onClose} className='border-2 px-3 py-2 w-24 rounded-full mr-4'>Cancel</button>
+      <button className='border-2 px-3 py-2 w-24 rounded-full text-white bg-green-400 hover:bg-green-500 duration-100 border-green-400 hover:border-green-500'>Save</button>
+    </div>
+  </>
 }
 function ProfileDesignModalBody() {
   return <></>
@@ -103,31 +144,25 @@ function Account() {
       <Modal isOpened={activeModal === 'email'} onClose={() => setActiveModal(!activeModal)} header={'Email address'} modalBody={<EmailModalBody onClose={() => setActiveModal(!activeModal)} />}>
       </Modal>
 
-      <Modal isOpened={activeModal === 'username'} onClose={() => setActiveModal(!activeModal)} header={'Username and subdomain'} modalBody={<UsernameModalBody onClose={() => setIsModalOpen(!isModalOpen)} />}>
+      <Modal isOpened={activeModal === 'username'} onClose={() => setActiveModal("")} header={'Username and subdomain'} modalBody={<UsernameModalBody onClose={() => { setIsModalOpen(!isModalOpen); setActiveModal("") }} />}>
       </Modal>
 
-      <Modal isOpened={activeModal === 'profile-design'} onClose={() => setActiveModal(!activeModal)} header={'Email address'} modalBody={<EmailModalBody onClose={() => setIsModalOpen(!isModalOpen)} />}>
+      <Modal isOpened={activeModal === 'profile-info'} onClose={() => setActiveModal(!activeModal)} header={'Profile Information'} modalBody={<ProfileInfoModalBody onClose={() => { setIsModalOpen(!isModalOpen); setActiveModal("") }} />}>
       </Modal>
 
-      <Modal isOpened={activeModal === 'delete-account'} onClose={() => setActiveModal(!activeModal)} header={'Email address'} modalBody={<EmailModalBody onClose={() => setIsModalOpen(!isModalOpen)} />}>
+      <Modal isOpened={activeModal === 'delete-account'} onClose={() => setActiveModal(!activeModal)} header={'Email address'} modalBody={<EmailModalBody onClose={() => { setIsModalOpen(!isModalOpen); setActiveModal("") }} />}>
       </Modal>
 
-      <Modal isOpened={activeModal === 'muted-writer'} onClose={() => setActiveModal(!activeModal)} header={'Email address'} modalBody={<EmailModalBody onClose={() => setIsModalOpen(!isModalOpen)} />}>
+      <Modal isOpened={activeModal === 'muted-writer'} onClose={() => setActiveModal(!activeModal)} header={'Email address'} modalBody={<EmailModalBody onClose={() => { setIsModalOpen(!isModalOpen); setActiveModal("") }} />}>
       </Modal>
 
-      <Modal isOpened={activeModal === 'deactivate-account'} onClose={() => setActiveModal(!activeModal)} header={'Email address'} modalBody={<EmailModalBody onClose={() => setIsModalOpen(!isModalOpen)} />}>
+      <Modal isOpened={activeModal === 'deactivate-account'} onClose={() => setActiveModal(!activeModal)} header={'Email address'} modalBody={<EmailModalBody onClose={() => { setIsModalOpen(!isModalOpen); setActiveModal("") }} />}>
       </Modal>
 
-      <Modal isOpened={activeModal === 'blocked-user'} onClose={() => setActiveModal(!activeModal)} header={'Email address'} modalBody={<EmailModalBody onClose={() => setIsModalOpen(!isModalOpen)} />}>
+      <Modal isOpened={activeModal === 'blocked-user'} onClose={() => setActiveModal(!activeModal)} header={'Email address'} modalBody={<EmailModalBody onClose={() => { setIsModalOpen(!isModalOpen); setActiveModal("") }} />}>
       </Modal>
 
-      <Modal isOpened={activeModal === 'email'} onClose={() => setActiveModal(!activeModal)} header={'Email address'} modalBody={<EmailModalBody onClose={() => setIsModalOpen(!isModalOpen)} />}>
-      </Modal>
 
-      <Modal isOpened={activeModal === 'email'} onClose={() => setActiveModal(!activeModal)} header={'Email address'} modalBody={<EmailModalBody onClose={() => setIsModalOpen(!isModalOpen)
-
-      } />}>
-      </Modal>
     </div>
   )
 }
