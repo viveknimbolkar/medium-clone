@@ -10,6 +10,7 @@ import SunImage from '../public/sun.jpg'
 import WritingOnMedium from '@/components/WritingOnMedium';
 import ConnectOnTwitter from '@/components/ConnectOnTwitter';
 import RecommendedTopics from '@/components/RecommendedTopics';
+import Footer from '@/components/Footer';
 export default function Home() {
   const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
   const [activeTab, setActiveTab] = useState("for-you");
@@ -31,7 +32,7 @@ export default function Home() {
             })}
           </div>
           <div>
-            <ArticalCard link={"/"} categoryLink={"/account"} date={"Nov, 7 2022"} thumbnail={SunImage} profileImage={UserImage} authorName={"Vivek Nimbolkar"} heading={"I am a bad software developer and this is my life"} shortDescription={"What is next? Over the past four months, I have been focusing on self-discovery. This journey began seven months ago when I was employed at a job that didn’t make me happy, but I couldn’t pinpoint why. "} category={"Programming"} timeToRead={"4 min read"} onSave={(e) => { console.log(e); }} />
+            <ArticalCard link={"/blog/i-am-a-bad-software-developer"} categoryLink={"/account"} date={"Nov, 7 2022"} thumbnail={SunImage} profileImage={UserImage} authorName={"Vivek Nimbolkar"} heading={"I am a bad software developer and this is my life"} shortDescription={"What is next? Over the past four months, I have been focusing on self-discovery. This journey began seven months ago when I was employed at a job that didn’t make me happy, but I couldn’t pinpoint why. "} category={"Programming"} timeToRead={"4 min read"} onSave={(e) => { console.log(e); }} />
           </div>
         </div>
         <div className='w-96 p-2'>
@@ -49,6 +50,7 @@ export default function Home() {
 
         </div>
       </section>
+      <Footer />
       </>}
 
     </>

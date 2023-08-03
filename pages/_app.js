@@ -4,6 +4,7 @@ import '@/styles/globals.css'
 import { config } from '@fortawesome/fontawesome-svg-core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
 import jwt_decode from 'jwt-decode'
+import Footer from '@/components/Footer'
 config.autoAddCss = false
 export default function App({ Component, pageProps }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -22,5 +23,5 @@ export default function App({ Component, pageProps }) {
     }
   }, [])
 
-  return (<AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, userEmail }}><Component {...pageProps} /></AuthContext.Provider>)
+  return (<AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, userEmail }}><Component {...pageProps} /><Footer /></AuthContext.Provider>)
 }
