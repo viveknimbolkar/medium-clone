@@ -3,8 +3,9 @@ import { faBell, faUser, faPenSquare, faSearch } from "@fortawesome/free-solid-s
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import headercss from './PrivateHeader.module.scss'
 import UserMenu from '../userMenu'
-import BecomePro from '../promember/becomePro'
-function PrivateHeader() {
+import BecomePro from '../promember/becomePro';
+import Link from 'next/link'
+function PrivateHeader({ hasNewStory = false }) {
   const [isUserMenuVisible, setIsUserMenuVisible] = useState(false);
   return (<>
     <header className={`${headercss.mainHeader} w-full flex justify-between px-5 py-3`}>
@@ -16,14 +17,14 @@ function PrivateHeader() {
         </div>
       </div>
       <div className='flex gap-5 items-center'>
-        <div>
+        {hasNewStory && <button className='rounded-full text-white bg-green-800 text-sm p-2 px-3' >Publish</button>}
+        {!hasNewStory && <Link href={"/new-story"}>
           <FontAwesomeIcon icon={faPenSquare} className='fa-xl hover:cursor-pointer' /> <label className='hover:cursor-pointer'>Write</label>
-        </div>
+        </Link>}
         <FontAwesomeIcon icon={faBell} className='fa-xl hover:cursor-pointer' />
         <FontAwesomeIcon onClick={() => setIsUserMenuVisible(!isUserMenuVisible)} icon={faUser} className='fa-xl hover:cursor-pointer' />
         {isUserMenuVisible && <UserMenu />}
       </div>
-
     </header>
     <BecomePro />
   </>
