@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { faBell, faUser, faPenSquare, faSearch } from "@fortawesome/free-solid-svg-icons"
+import { faSearch } from "@fortawesome/free-solid-svg-icons"
+import { faBell, faUser } from "@fortawesome/free-regular-svg-icons"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import headercss from './PrivateHeader.module.scss'
 import UserMenu from '../userMenu'
