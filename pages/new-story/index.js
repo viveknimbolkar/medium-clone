@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useRef, useState } from 'react'
 import { faXTwitter, faFacebook, faInstagram, faGoogle, faWhatsapp, faReddit, faQuora } from '@fortawesome/free-brands-svg-icons'
 import { Popover } from 'react-tiny-popover';
+import axios from 'axios';
 
 function NewStory() {
     const [title, setTitle] = useState("")
@@ -23,11 +24,22 @@ function NewStory() {
     const handleImage = (e) => {
         setImage(e.target.files[0])
     }
-    
+
     console.log(image);
 
+    const handlePublish = () => {   
+        const formDataImage = new FormData();
+        formDataImage.append('image',image);
+        formDataImage.append('title',title);
+        formDataImage.append('article',article);
+        formDataImage.append('links',links);
+        
+        axios.post("/api/article/add", { title: title, article: article, image: formDataImage, links: links }).then(res => { console.log(res); }).catch(err => { console.log(err); });
+
+    }
+
     return <>
-        <PrivateHeader hasNewStory={true} />
+        <PrivateHeader hasNewStory={true} onPublish={handlePublish} />
         <section className='mx-auto w-[80vw]'>
             <input placeholder='Title' className=' my-4 rounded-lg p-3 border-2 w-full  focus:outline-none' value={title} onChange={(e => setTitle(e.target.value))} type='text' />
             <textarea value={article} onChange={(e => setArticle(e.target.value))} rows={15} className='rounded-lg p-3 border-2 my-4  w-full  focus:outline-none' placeholder='Write your story...'></textarea>

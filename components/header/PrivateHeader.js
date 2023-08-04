@@ -6,7 +6,7 @@ import headercss from './PrivateHeader.module.scss'
 import UserMenu from '../userMenu'
 import BecomePro from '../promember/becomePro';
 import Link from 'next/link'
-function PrivateHeader({ hasNewStory = false }) {
+function PrivateHeader({ hasNewStory = false, onPublish }) {
   const [isUserMenuVisible, setIsUserMenuVisible] = useState(false);
   return (<>
     <header className={`${headercss.mainHeader} w-full flex justify-between px-5 py-3`}>
@@ -18,7 +18,7 @@ function PrivateHeader({ hasNewStory = false }) {
         </div>
       </div>
       <div className='flex gap-5 items-center'>
-        {hasNewStory && <button className='rounded-full text-white bg-green-800 text-sm p-2 px-3' >Publish</button>}
+        {hasNewStory && <button onClick={onPublish} className='rounded-full text-white bg-green-800 text-sm p-2 px-3' >Publish</button>}
         {!hasNewStory && <Link href={"/new-story"}>
           <FontAwesomeIcon icon={faPenSquare} className='fa-xl hover:cursor-pointer' /> <label className='hover:cursor-pointer'>Write</label>
         </Link>}
