@@ -1,20 +1,22 @@
-import formidable from "formidable";
+import User from "@/models/User";
+import { dbConnect } from "@/utils/dbConnection";
+import jwt from 'jsonwebtoken'
 export default async function handler(req, res) {
-    const form = formidable({});
     try {
         if (req.method === 'POST') {
-            form.parse(req, (err, fields, files) => {
-                if (err)
-                    res.status(500).json({ output: "Internal Server Error" });
+            dbConnect();
+            const jwtToken = jwt.verify(req.headers.authorization, process.env.JWT_SECRET);
+            User.findOneAndUpdate({ email: jwtToken.email }, { $push: { articles: req.body } }, { new: true }).then(data => {
+                res.status(500).json({ output: "Article Saved" })
+                ;
+            }).catch(err => {
+                res.status(500).json({ error: err })
+            })
 
-                console.log(fields, files);
-            res.status(200).json({ output: fields });
-
-            });
-            res.status(200).json({ output: 'ok' });
         }
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: error })
+
     }
 }

@@ -25,16 +25,17 @@ function NewStory() {
         setImage(e.target.files[0])
     }
 
-    console.log(image);
 
-    const handlePublish = () => {   
-        const formDataImage = new FormData();
-        formDataImage.append('image',image);
-        formDataImage.append('title',title);
-        formDataImage.append('article',article);
-        formDataImage.append('links',links);
-        
-        axios.post("/api/article/add", { title: title, article: article, image: formDataImage, links: links }).then(res => { console.log(res); }).catch(err => { console.log(err); });
+    const handlePublish = async (e) => {
+        // console.log(image);
+        // const formDataImage = new FormData();
+        // formDataImage.append('image', image);
+        // formDataImage.append('upload_preset', 'medium-clone');
+        // const cloudinary = await fetch("https://api.cloudinary.com/v1_1/dflnpqm5r/image/upload", { method: "POST", body: formDataImage }).then(res => res.json()).then(data => { console.log(data); }).catch(err => console.log(err));
+        // console.log(cloudinary);
+
+
+        axios.post("/api/article/add", { title: title, article: article, links: links }, { headers: { Authorization: localStorage.getItem('token') } }).then(res => { console.log(res); }).catch(err => { console.log(err); });
 
     }
 

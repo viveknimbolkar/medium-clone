@@ -11,7 +11,8 @@ import WritingOnMedium from '@/components/WritingOnMedium';
 import ConnectOnTwitter from '@/components/ConnectOnTwitter';
 import RecommendedTopics from '@/components/RecommendedTopics';
 import Footer from '@/components/Footer';
-export default function Home() {
+export default function Home({ articles }) {
+  console.log("articles received", articles);
   const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
   const [activeTab, setActiveTab] = useState("for-you");
   const tabs = [
@@ -38,7 +39,7 @@ export default function Home() {
         <div className='w-96 p-2'>
           <WritingOnMedium />
           <ConnectOnTwitter />
-          <RecommendedTopics topics={[{ label: "Programming", link: "https://google.com" }, { label: "Programming Backend", link: "https://google.com" }, { label: "Progamming", link: "https://google.com" }, { label: "Proming", link: "https://google.com" }  ]} />
+          <RecommendedTopics topics={[{ label: "Programming", link: "https://google.com" }, { label: "Programming Backend", link: "https://google.com" }, { label: "Progamming", link: "https://google.com" }, { label: "Proming", link: "https://google.com" }]} />
         </div>
       </section> </>) : <><PublicHeader /><section className='flex h-[70vh] bg-yellow-400 border-b border-black pl-[100px]'>
         <div className='flex flex-col justify-center gap-5'>
@@ -50,9 +51,22 @@ export default function Home() {
 
         </div>
       </section>
-      <Footer />
+        <Footer />
       </>}
 
     </>
   )
+}
+
+export async function getServerSideProps({ params }) {
+  const articles = await fetch(`http://localhost:3000/api/article/all-articles`);
+  const data = await articles.json();
+
+  console.log("articles", data);
+  return {
+    props: {
+      data
+    }
+  }
+
 }

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { faSearch } from "@fortawesome/free-solid-svg-icons"
-import { faBell, faUser } from "@fortawesome/free-regular-svg-icons"
+import { faPenToSquare, faBell, faUser } from "@fortawesome/free-regular-svg-icons"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import headercss from './PrivateHeader.module.scss'
 import UserMenu from '../userMenu'
@@ -20,10 +20,10 @@ function PrivateHeader({ hasNewStory = false, onPublish }) {
       <div className='flex gap-5 items-center'>
         {hasNewStory && <button onClick={onPublish} className='rounded-full text-white bg-green-800 text-sm p-2 px-3' >Publish</button>}
         {!hasNewStory && <Link href={"/new-story"}>
-          <FontAwesomeIcon icon={faPenSquare} className='fa-xl hover:cursor-pointer' /> <label className='hover:cursor-pointer'>Write</label>
+          <FontAwesomeIcon size='lg' icon={faPenToSquare} className=' hover:cursor-pointer' /> <label className='hover:cursor-pointer'>Write</label>
         </Link>}
-        <FontAwesomeIcon icon={faBell} className='fa-xl hover:cursor-pointer' />
-        <FontAwesomeIcon onClick={() => setIsUserMenuVisible(!isUserMenuVisible)} icon={faUser} className='fa-xl hover:cursor-pointer' />
+        <FontAwesomeIcon size='lg' icon={faBell} className=' hover:cursor-pointer' />
+        <FontAwesomeIcon size='lg' onClick={() => setIsUserMenuVisible(!isUserMenuVisible)} icon={faUser} className=' hover:cursor-pointer' />
         {isUserMenuVisible && <UserMenu />}
       </div>
     </header>

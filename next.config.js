@@ -3,6 +3,9 @@ const nextConfig = {
   reactStrictMode: true,
   env: {
     JWT_SECRET: 'iLoveCoding',
+  },
+  devIndicators:{
+    buildActivity:false,
   }
 }
 
