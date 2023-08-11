@@ -11,8 +11,8 @@ import WritingOnMedium from '@/components/WritingOnMedium';
 import ConnectOnTwitter from '@/components/ConnectOnTwitter';
 import RecommendedTopics from '@/components/RecommendedTopics';
 import Footer from '@/components/Footer';
+import { sliceString } from '@/utils/sliceString';
 export default function Home({ articles }) {
-  console.log("articles received", articles);
   const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
   const [activeTab, setActiveTab] = useState("for-you");
   const tabs = [
@@ -34,6 +34,12 @@ export default function Home({ articles }) {
           </div>
           <div>
             <ArticalCard link={"/blog/i-am-a-bad-software-developer"} categoryLink={"/account"} date={"Nov, 7 2022"} thumbnail={SunImage} profileImage={UserImage} authorName={"Vivek Nimbolkar"} heading={"I am a bad software developer and this is my life"} shortDescription={"What is next? Over the past four months, I have been focusing on self-discovery. This journey began seven months ago when I was employed at a job that didn’t make me happy, but I couldn’t pinpoint why. "} category={"Programming"} timeToRead={"4 min read"} onSave={(e) => { console.log(e); }} />
+
+            {articles && articles.articles.map((article, i) => {
+              console.log(article);
+              return <ArticalCard key={article._id} link={article.link} categoryLink={article.categoryLink} date={article.date} thumbnail={article.thumbnail} profileImage={article.profileImage} authorName={article.authorName} heading={article.heading} shortDescription={sliceString(article.article)} category={article.category} timeToRead={article.timeToRead} onSave={(e) => { console.log(e); }} />
+            })}
+
           </div>
         </div>
         <div className='w-96 p-2'>
@@ -58,14 +64,13 @@ export default function Home({ articles }) {
   )
 }
 
-export async function getServerSideProps({ params }) {
-  const articles = await fetch(`http://localhost:3000/api/article/all-articles`);
-  const data = await articles.json();
+export async function getServerSideProps(context) {
+  const response = await fetch(`http://localhost:3000/api/article/all-articles`);
+  const articles = await response.json();
 
-  console.log("articles", data);
   return {
     props: {
-      data
+      articles
     }
   }
 

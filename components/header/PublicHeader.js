@@ -21,7 +21,7 @@ function PublicHeader() {
 
     const router = useRouter();
     const handleSubmit = () => {
-        axios.post("/api/auth/signin", { email, password }).then(res => { localStorage.setItem('token', res.data.token); setIsLoggedIn(true); router.push("/home"); }).catch(err => console.log(err))
+        axios.post("/api/auth/signin", { email, password }).then(res => { localStorage.setItem('token', res.data.token); setIsLoggedIn(true); router.push("/"); }).catch(err => console.log(err))
     }
 
     const handleSignUp = () => {
