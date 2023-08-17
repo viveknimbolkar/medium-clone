@@ -19,6 +19,7 @@ const articleSchema = mongooose.Schema(
         category: { type: String },
         timeToRead: { type: String },
         article: { type: String },
+        slug: { type: String },
     }
 );
 

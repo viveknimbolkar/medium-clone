@@ -12,6 +12,8 @@ import ConnectOnTwitter from '@/components/ConnectOnTwitter';
 import RecommendedTopics from '@/components/RecommendedTopics';
 import Footer from '@/components/Footer';
 import { sliceString } from '@/utils/sliceString';
+import { calculateTimeToRead } from '@/utils/calculateTimeToRead';
+import axios from 'axios';
 export default function Home({ articles }) {
   const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
   const [activeTab, setActiveTab] = useState("for-you");
@@ -22,6 +24,18 @@ export default function Home({ articles }) {
     { label: "Health", slug: "health" },
     { label: "Family", slug: "family" },
   ]
+  const saveArticle = (slug) => {
+    console.log(slug);
+    if (slug === "" || slug === undefined)
+      return;
+
+    axios.post("/api/article/bookmarkArticle", { slug: slug }, { headers: { Authorization: localStorage.getItem("token") } }).then(res => { 
+      console.log(res); 
+    }).catch(err => { 
+      console.log(err); 
+    });
+  }
+
   return (
     <>
       {isLoggedIn ? (<><PrivateHeader /> <section className='flex px-28'>
@@ -33,11 +47,10 @@ export default function Home({ articles }) {
             })}
           </div>
           <div>
-            <ArticalCard link={"/blog/i-am-a-bad-software-developer"} categoryLink={"/account"} date={"Nov, 7 2022"} thumbnail={SunImage} profileImage={UserImage} authorName={"Vivek Nimbolkar"} heading={"I am a bad software developer and this is my life"} shortDescription={"What is next? Over the past four months, I have been focusing on self-discovery. This journey began seven months ago when I was employed at a job that didn’t make me happy, but I couldn’t pinpoint why. "} category={"Programming"} timeToRead={"4 min read"} onSave={(e) => { console.log(e); }} />
+            <ArticalCard link={"/blog/i-am-a-bad-software-developer"} categoryLink={"/account"} date={"Nov, 7 2022"} thumbnail={SunImage} profileImage={UserImage} authorName={"Vivek Nimbolkar"} heading={"I am a bad software developer and this is my life"} shortDescription={"What is next? Over the past four months, I have been focusing on self-discovery. This journey began seven months ago when I was employed at a job that didn’t make me happy, but I couldn’t pinpoint why. "} category={"Programming"} timeToRead={"4 min read"} />
 
             {articles && articles.articles.map((article, i) => {
-              console.log(article);
-              return <ArticalCard key={article._id} link={article.link} categoryLink={article.categoryLink} date={article.date} thumbnail={article.thumbnail} profileImage={article.profileImage} authorName={article.authorName} heading={article.heading} shortDescription={sliceString(article.article)} category={article.category} timeToRead={article.timeToRead} onSave={(e) => { console.log(e); }} />
+              return <ArticalCard onSave={() => saveArticle(article.slug)} key={article._id} link={article.link} categoryLink={article.categoryLink} date={article.date} thumbnail={article.thumbnail} profileImage={article.profileImage} authorName={article.authorName} heading={article.heading} shortDescription={sliceString(article.article)} category={article.category} timeToRead={calculateTimeToRead(article.article)} />
             })}
 
           </div>

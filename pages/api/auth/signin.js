@@ -7,7 +7,8 @@ export default async function handler(req, res) {
         const { email, password } = req.body;
         await dbConnect();
         const userFound = await User.findOne({ email: email, password: password });
-        if (!userFound)
+        console.log(userFound);
+        if (!userFound || userFound === null)
             return res.status(200).json({ output: "Invalid username or password" });
         return res.status(200).json({ token: jwt.sign({ email: userFound.email, name: userFound.name }, process.env.JWT_SECRET) });
     }

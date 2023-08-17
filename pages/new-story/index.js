@@ -107,6 +107,7 @@ function NewStory() {
                             console.log(e.target.value);
                             var temp = [...links];
                             temp[i].link = e.target.value;
+                            temp[i].label = links[i].iconName === "twitter" ? 'Twitter' : links[i].iconName === "reddit" ? "Reddit" : links[i].iconName === "whatsapp" ? "Whatsapp" : links[i].iconName === "facebook" ? "Facebook" : links[i].iconName === "quora" ? "Quora" : links[i].iconName === "google" ? "Google" : links[i].iconName === "instagram" ? "Instagram" : ""
                             setLinks(temp);
                         }} className='border-none w-48 p-2 text-gray-600 focus:outline-none' />
                     </div>);

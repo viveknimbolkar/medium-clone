@@ -9,10 +9,9 @@ import Link from 'next/link'
 
 function ArticalCard({ profileImage = UserImage, categoryLink, thumbnail = ArticleCardThumbnail, link, heading, date, shortDescription, onSave, authorName, category, timeToRead }) {
     const [showActions, setShowActions] = useState(false)
-
     const dateObj = new Date(Number(date)).toString().split(" ");
     const parsedDate = `${dateObj[1]}, ${dateObj[2]} ${dateObj[3]}`
-    
+
     return (
         <div className='w-full p-4 border-b'>
             <div className='flex items-center justify-between'>
@@ -38,7 +37,7 @@ function ArticalCard({ profileImage = UserImage, categoryLink, thumbnail = Artic
 
                             <span>{timeToRead}</span></div>
                         <div className='flex items-center  gap-3 relative'>
-                            <FontAwesomeIcon icon={faBookmark} size='lg' />
+                            <FontAwesomeIcon onClick={onSave} icon={faBookmark} size='lg' />
                             <FontAwesomeIcon className='p-2' onClick={() => setShowActions(!showActions)} icon={faEllipsis} size='lg' />
                             {showActions && <ul className='absolute bg-white shadow-md rounded p-2 top-10 w-40'>
                                 <Link className='text-gray-500 hover:text-black' href={"/"}>

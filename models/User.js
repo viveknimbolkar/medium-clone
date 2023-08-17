@@ -7,10 +7,18 @@ const linkSchema = Schema({
 })
 
 const articleSchems = Schema({
-  title: { type: String },
+  profileImage: { type: String },
+  categoryLink: { type: String },
+  thumbnail: { type: String },
+  link: { type: String },
+  socialLinks: [linkSchema],
+  heading: { type: String },
+  date: { type: String },
+  authorName: { type: String },
+  category: { type: String },
+  timeToRead: { type: String },
   article: { type: String },
-  image: { type: String },
-  links: [linkSchema],
+  slug: { type: String },
 });
 
 const userSchema = mongooose.Schema(
@@ -19,6 +27,8 @@ const userSchema = mongooose.Schema(
     email: { type: String },
     password: { type: String },
     articles: [articleSchems],
+    userid: { type: String },
+    savedArticle: [String],
   }
 );
 

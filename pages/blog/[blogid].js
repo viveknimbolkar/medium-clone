@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import Image from 'next/image'
 import BlogImage from '../../public/blogimage.webp'
 import UserImage from '../../public/user.png'
+import BlogThumbnail from '../../public/thumbnail.png'
 import PrivateHeader from '@/components/header/PrivateHeader';
 import Link from 'next/link'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -11,10 +12,12 @@ import { faEllipsis } from '@fortawesome/free-solid-svg-icons'
 import ArticalCardVertical from '@/components/ArticalCardVertical'
 import Article1 from '../../public/women-money.jpg'
 import Article2 from '../../public/women-grid.png'
+import { calculateTimeToRead } from '@/utils/calculateTimeToRead'
 
-export default function Blog({ article }) {
+export default function Blog({ articles }) {
   const [follow, setFollow] = useState(false);
-  console.log("getting article ", article);
+  const { article } = articles;
+  const publishDate = new Date(Number(article.date)).toString().split(" ");
 
   function ActionBar() {
     return <> <div className='my-6 flex justify-between items-center duration-300 text-gray-500 p-2'>
@@ -49,25 +52,26 @@ export default function Blog({ article }) {
       <span className='text-sm'>A social networking platform that turns creators into entrepreneurs.</span>
     </div>
   }
+
   return <>
     <PrivateHeader />
     <section className='w-1/2 mx-auto mt-4'>
-      <Image src={BlogImage} className='w-full' />
-      <h1 className='font-bold text-4xl text-slate-950 my-4'>{article?.heading ? article.heading : <></>}</h1>
+      <Image alt='Article Thumbnail' src={article?.thumbnail ? article.thumbnail : BlogThumbnail} className='w-full' />
+      <h1 className='font-bold text-4xl text-slate-950 my-4'>{article?.heading ? article.heading : <>No Title</>}</h1>
       <div className='flex items-center gap-3 my-4'>
         <Image src={UserImage} width={50} height={50} />
         <div className='text-sm'>
           <div className='flex gap-3'>
             <Link href={"/"} className='hover:underline'>
-              <strong>The Capital Platform</strong>
+              <strong>{article.authorName}</strong>
             </Link>
             &middot;
             <button className='text-gray-500' onClick={e => { setFollow(!follow) }}>{follow ? "Follow" : "Following"}</button>
           </div>
-          <div className='flex gap-3'>
+          <div className='flex gap-4'>
             <p>Published in  <Link href={"/"} className='hover:underline'>
               The Capital Platform
-            </Link></p>&middot;<span>4 min read</span>&middot;<date>4, Jul 2023</date>
+            </Link></p>&middot;<span>{article.timeToRead}</span>&middot;<date>{`${publishDate[2]}, ${publishDate[1]} ${publishDate[3]}`}</date>
           </div>
         </div>
       </div>
@@ -76,8 +80,11 @@ export default function Blog({ article }) {
         {article?.article ? article.article : <></>}
       </div>
       <div className='flex gap-3'>
-        <Link href={"/"} className='underline text-lg'>Twitter</Link> |
-        <Link href={"/"} className='underline text-lg'>Twitter</Link>
+        {article && article.socialLinks.map((item, i) => {
+          console.log(item);
+          return <Link target='_blank' key={`link-${i}-${item.label}`} href={item.link} className='underline text-lg'>{item.label}</Link>
+        })}
+
       </div>
       {/* end of article */}
       <div className='flex justify-center items-center gap-3  my-6'>
@@ -85,7 +92,7 @@ export default function Blog({ article }) {
         <FontAwesomeIcon icon={faCircle} size='sm' />
         <FontAwesomeIcon icon={faCircle} size='sm' />
       </div>
-      <div>
+      <div className='text-gray-500'>
         Disclaimer: This article is not intended to be a source of investment, financial, technical, tax, or legal advice. All of this content is for informational purposes only. Readers should do their own research. The Capital is not responsible, directly or indirectly, for any damage or loss caused or alleged to be caused by reliance on any information mentioned in this article.
       </div>
       <div className='flex gap-4 my-6'>
@@ -107,11 +114,10 @@ export default function Blog({ article }) {
 
 export async function getServerSideProps({ query }) {
   const response = await fetch(`http://localhost:3000/api/article/${query.blogid}`);
-  const article = await response.json();
-  console.log(article);
+  const articles = await response.json();
   return {
     props: {
-      article
+      articles
     }
   }
 
