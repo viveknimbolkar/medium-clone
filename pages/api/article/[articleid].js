@@ -2,7 +2,6 @@ import Article from "@/models/Article";
 import { dbConnect } from "@/utils/dbConnection";
 
 export default async function handler(req, res) {
-    console.log(req.query.articleid);
     if (req.method === 'GET') {
         dbConnect();
         if (req.query.articleid === 'all-articles') {

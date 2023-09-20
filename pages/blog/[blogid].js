@@ -15,6 +15,13 @@ import Article2 from '../../public/women-grid.png'
 import { calculateTimeToRead } from '@/utils/calculateTimeToRead'
 
 export default function Blog({ articles }) {
+  const router = useRouter();
+
+if(articles.status === 404){
+  router.push("/");
+  return;
+}
+
   const [follow, setFollow] = useState(false);
   const { article } = articles;
   const publishDate = new Date(Number(article.date)).toString().split(" ");
@@ -80,7 +87,7 @@ export default function Blog({ articles }) {
         {article?.article ? article.article : <></>}
       </div>
       <div className='flex gap-3'>
-        {article && article.socialLinks.map((item, i) => {
+        {article && article?.socialLinks?.map((item, i) => {
           console.log(item);
           return <Link target='_blank' key={`link-${i}-${item.label}`} href={item.link} className='underline text-lg'>{item.label}</Link>
         })}
